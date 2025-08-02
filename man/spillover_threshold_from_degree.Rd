@@ -36,7 +36,9 @@ what is expected from random signal diffusion alone, and is intended for
 use with row-normalized sparse adjacency or TOM matrices.
 }
 \examples{
+\dontrun{
 threshold <- spillover_threshold_from_degree(W = my_network, quantile = 0.95)
 spill_binary <- ifelse(spillover > threshold, 1, 0)
+}
 
 }

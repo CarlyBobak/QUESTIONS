@@ -34,7 +34,7 @@ Default is a weighted sum of expr × spillover.}
 **Interpreting Per-Sample Spillover Scores**
 
 This function computes a summary score for each sample, reflecting how strongly the sample expresses genes
-that were influenced by network-based spillover from upstream signals (e.g., hub genes or initiators). 
+that were influenced by network-based spillover from upstream signals (e.g., hub genes or initiators).
 
 The default scoring function calculates a weighted sum:
 
@@ -47,7 +47,7 @@ where:
 - \eqn{\text{expression}_{gs}} is the expression of gene *g* in sample *s*
 - \eqn{\text{spillover}_g} is the spillover score assigned to gene *g* at that timepoint
 
-This score can be interpreted as the degree to which a sample expresses the genes that received 
+This score can be interpreted as the degree to which a sample expresses the genes that received
 signal via network propagation. Higher values suggest a stronger manifestation of upstream network activity.
 
 **Z-score Option (`normalize_samples = TRUE`):**
@@ -73,10 +73,11 @@ Aggregates expression data using gene-level spillover weights. Accepts either a 
 or lists of both for timecourse-style analysis (e.g., paired with `spillover_timecourse()`).
 }
 \examples{
+\dontrun{
 # Single timepoint
 scores <- summarize_spillover_per_sample(expr, spillover_vec)
 
 # Timecourse
 scores_list <- summarize_spillover_per_sample(expr_list, spillover_list)
-
+}
 }

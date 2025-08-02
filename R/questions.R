@@ -4,13 +4,13 @@
 #' improving interpretability and biological signal in diffusion tasks.
 #'
 #' @param mat A square similarity matrix (e.g., TOM or adjacency)
-#' @param method Either "threshold" or "topk"
 #' @param value A numeric threshold (if method = "threshold") or number of neighbors (if method = "topk")
 #' @param auto If TRUE, determine threshold automatically to achieve target sparsity
 #' @param target_sparsity Desired sparsity level (only used if auto = TRUE and method = "threshold")
 #' @param verbose If TRUE, prints pruning diagnostics
 #'
 #' @return A pruned matrix with zeroed weak connections
+#' @export
 prune_matrix <- function(mat,
                          value = NULL,
                          auto = FALSE,
@@ -18,30 +18,30 @@ prune_matrix <- function(mat,
                          verbose = TRUE) {
   if (!is.matrix(mat) && !inherits(mat, "Matrix")) stop("Input must be a matrix.")
   if (!identical(rownames(mat), colnames(mat))) stop("Matrix must have matching row and column names.")
-  
+
   pruned <- mat
-  
+
   if((is.null(value)&(auto==F))){
     stop("Please provide a threshold value, or set auto=TRUE")
   }
-  
+
   if (auto) {
     # Total number of elements in full matrix
     total_elements <- nrow(mat)^2  # square matrix
-      
+
     # Number of non-NA, non-zero entries you want to retain
     target_nonzero_count <- round(target_sparsity * total_elements,0)
-      
+
     # Get all values (including zeros, if dense) or just non-zero if sparse
     all_vals <- as.vector(mat@x)
     all_vals <- all_vals[!is.na(all_vals)]  # remove NA if any
-      
+
     # Get cutoff corresponding to retaining `target_nonzero_count` largest values
     sorted_vals <- sort(all_vals, decreasing = TRUE)
     value <- sorted_vals[target_nonzero_count]
     if (verbose) message(sprintf("Auto-threshold selected: %.4f for target sparsity %.2f", value, target_sparsity))
   }
-    
+
   pruned@x[pruned@x <= value] <- 0  # this zeroes out small values
   pruned <- Matrix::drop0(pruned)
 
@@ -52,7 +52,7 @@ prune_matrix <- function(mat,
 #' Calculate gene-level spillover from time 1 to time 2
 #'
 #' This function estimates spillover effects from a set of initiator genes (with optional initial effects)
-#' using a transition matrix derived from a TOM matrix, adjacency matrix, or WGCNA object. Optionally, the 
+#' using a transition matrix derived from a TOM matrix, adjacency matrix, or WGCNA object. Optionally, the
 #' network matrix can be pruned to remove weak or noisy connections using either a threshold or top-k filtering strategy.
 #'
 #' @param network An adjacency matrix, TOM matrix, or a WGCNA result object (list with `TOM`, `adjacency`, or `datExpr`).
@@ -102,43 +102,43 @@ prune_matrix <- function(mat,
 #' @seealso \code{\link{prune_matrix}} for preprocessing options to filter weak edges before spillover.
 #'
 #' @examples
-#' # Using TOM matrix with default binary initiators
-#' spillover <- calculate_spillover(network = tom_matrix,
-#'                                  initiator_genes = hub_genes,
-#'                                  alpha = 0.85,
-#'                                  prune = TRUE,
-#'                                  prune_args = list(method = "threshold", auto = TRUE, target_sparsity = 0.05))
+#' \dontrun{
+#' spillover <- calculate_spillover(
+#'   network = tom_matrix,
+#'   initiator_genes = hub_genes,
+#'   alpha = 0.85,
+#'   prune = TRUE,
+#'   prune_args = list(method = "threshold", auto = TRUE, target_sparsity = 0.05)
+#' )
+#' }
 #'
-#' # Using WGCNA result object with weighted effects
-#' spillover <- calculate_spillover(network = wgcna_result,
-#'                                  initiator_genes = names(logFC),
-#'                                  gene_effects = logFC,
-#'                                  alpha = 0.9)
+#'@export
+
 calculate_spillover <- function(network,
                                 initiator_genes,
                                 gene_effects = NULL,
-                                alpha = 1, row_normalize=FALSE, prune = FALSE, 
+                                alpha = 1, row_normalize=FALSE, prune = FALSE,
                                 prune_args = list(value=NULL, auto = TRUE, target_sparsity = 0.05)) {
   # --- Step 1: Extract adjacency matrix ---
   W<-extract_network_matrix(network)
-  
+
   # --- Convert to sparse dgCMatrix if not already ---
   W<-coerce_to_dgCMatrix(W)
-  
+
   if (prune) {
     W <- do.call(prune_matrix, c(list(mat = W), prune_args))
   }
-  
+
   # --- Step 2: Ensure square matrix and named ---
   gene_names <- rownames(W)
   if (is.null(gene_names) || any(gene_names != colnames(W))) {
     stop("The network matrix must have matching row and column names.")
   }
-  
+
   # --- Step 3: Initialize effect vector ---
   init_vec <- rep(0, length(gene_names))
   names(init_vec) <- gene_names
-  
+
   # Use gene_effects if provided, else default to 1
   if (!is.null(gene_effects)) {
     gene_effects <- gene_effects[names(gene_effects) %in% gene_names]
@@ -146,15 +146,15 @@ calculate_spillover <- function(network,
   } else {
     init_vec[initiator_genes[initiator_genes %in% gene_names]] <- 1
   }
-  
+
   # --- Step 4: Row-normalize W to make stochastic ---
   if(row_normalize){
     W<-normalize_rows(W)
   }
-  
+
   # --- Step 5: Spillover calculation ---
   spillover <- alpha * (W %*% init_vec) + (1 - alpha) * init_vec
-  
+
   spill_vec <- as.numeric(spillover)
   names(spill_vec) <- rownames(W)
   return(spill_vec)  # return named vector
@@ -220,11 +220,12 @@ calculate_spillover <- function(network,
 #'
 #' This function is particularly well-suited for longitudinal studies (e.g., developmental timecourses, intervention responses),
 #' where spillover-based diffusion reveals shifting patterns of gene influence across the network's evolving topology.
-#' 
+#'
 #' @return A named list of spillover vectors (named numeric vectors) for each timepoint in the input list.
 #'
 #' @seealso \code{\link{calculate_spillover}}, \code{\link{prune_matrix}}
 #'
+#'@export
 spillover_timecourse <- function(
     network_list,
     initiator_genes,
@@ -242,22 +243,22 @@ spillover_timecourse <- function(
     prune_args = list(auto = FALSE, target_sparsity = 0.05),
     verbose = TRUE
 ) {
-  
+
   # --- Input checks ---
   if (!is.list(network_list) || is.null(names(network_list))) {
     stop("`network_list` must be a named list of networks/WGCNA results, one per timepoint.")
   }
-  
+
   if (is.list(initiator_genes)) {
     if (length(initiator_genes) != length(network_list)) {
       stop("If `initiator_genes` is a list, it must have the same length as `network_list`.")
     }
   }
-  
+
   if (!is.list(initiator_genes) & is.null(gene_effects) & !use_previous_spillover) {
     warning("Using the same initiator genes at every timepoint with binary effects and no prior spillover. If this is unintended, consider passing `gene_effects` or enabling `use_previous_spillover = TRUE`.")
   }
-  
+
   if (!is.null(gene_effects)) {
     if (is.list(gene_effects)) {
       if (length(gene_effects) != length(network_list)) {
@@ -272,17 +273,17 @@ spillover_timecourse <- function(
       }
     }
   }
-  
+
   spillover_results <- list()
   n_timepoints <- length(network_list)
-  
+
   # --- Track persistent initiators if enabled ---
   all_active_genes <- character(0)
-  
+
   for (i in seq_len(n_timepoints)) {
     if (verbose) message("Processing timepoint ", i, "/", n_timepoints)
     net <- network_list[[i]]
-    
+
     # --- Determine initiators and effects ---
     if (use_previous_spillover && i > 1) {
       # Use previous spillover directly
@@ -301,12 +302,12 @@ spillover_timecourse <- function(
       } else {
         genes_on <- initiator_genes
       }
-      
+
       if (persistent_initiators) {
         all_active_genes <- union(all_active_genes, genes_on)
         genes_on <- all_active_genes
       }
-      
+
       if (is.null(gene_effects)) {
         all_genes <- rownames(net$TOM %||% net$adjacency %||% net)
         effects <- rep(0, length(all_genes))
@@ -320,20 +321,20 @@ spillover_timecourse <- function(
     }
 
     net<-extract_network_matrix(net)
-    
+
     if(prune){
       net <- do.call(prune_matrix, c(list(mat = net, verbose = verbose), prune_args))
     }
-    
+
     if(row_normalize){
       net<-normalize_rows(net)
-    } 
-    
+    }
+
     if((row_normalize==F)&calc_threshold){
       warning("Normalizing rows of adjacency matrix for spillover threshold calculation")
       net<-normalize_rows(net)
     }
-    
+
     # --- Run spillover ---
     spill <- calculate_spillover(
       network = net,
@@ -343,7 +344,7 @@ spillover_timecourse <- function(
       row_normalize = FALSE,
       prune = FALSE,
     )
-    
+
     # --- Optional thresholding meaningful spillover---
     if(threshold_spillover){
       if(calc_threshold){
@@ -354,17 +355,17 @@ spillover_timecourse <- function(
       }
       spill[spill <= threshold]<-0
     }
-    
+
     spillover_results[[i]] <- spill
-    
+
     # --- Optional binary thresholding for propagation---
     if (binary) {
       spill <- ifelse(spill > threshold, 1, 0)
     }
-    
+
     prev_spill <- spill
   }
-  
+
   names(spillover_results) <- names(network_list)
   return(spillover_results)
 }
@@ -389,34 +390,36 @@ spillover_timecourse <- function(
 #' @return A single numeric value representing the recommended spillover threshold.
 #'
 #' @examples
+#' \dontrun{
 #' threshold <- spillover_threshold_from_degree(W = my_network, quantile = 0.95)
 #' spill_binary <- ifelse(spillover > threshold, 1, 0)
+#' }
 #'
 #' @export
 spillover_threshold_from_degree <- function(W, quantile = 0.95, verbose = TRUE, tolerance = 1e-6) {
   if (!inherits(W, "dgCMatrix")) {
     stop("Input matrix W must be of class 'dgCMatrix'. Please convert before running.")
   }
-  
+
   # --- Check row-normalization ---
   rs <- Matrix::rowSums(W)
   if (any(abs(rs - 1) > tolerance)) {
     warning("Normalizing network matrix")
     W<-normalize_rows(W)
   }
-  
+
   # --- Compute degree-aware expected signal ---
   degrees <- Matrix::rowSums(W != 0)
   expected_spillover <- degrees / sum(degrees)
-  
+
   # --- Compute threshold ---
   threshold <- stats::quantile(expected_spillover, probs = quantile, names = FALSE)
-  
+
   if (verbose) {
     message(sprintf("Spillover threshold set at %.6f (%.0fth percentile of degree-based expectation)",
                     threshold, quantile * 100))
   }
-  
+
   return(threshold)
 }
 
@@ -434,21 +437,22 @@ spillover_threshold_from_degree <- function(W, quantile = 0.95, verbose = TRUE, 
 #' @return A row-normalized sparse matrix of the same dimensions and class.
 #'
 #' @examples
+#' \dontrun{
 #' W_norm <- normalize_rows(W)
-#'
+#'}
 #' @export
 normalize_rows <- function(W, verbose = TRUE) {
-  
+
   rs <- Matrix::rowSums(W)
-  
+
   if (any(rs == 0)) {
     ix <- which(rs == 0)
     W[ix, ix] <- 1  # insert self-edges
     rs[ix] <- 1     # avoid division by zero
   }
-  
+
   W_norm <- W / rs  # performs row-wise broadcasting
-  
+
   return(W_norm)
 }
 
@@ -465,18 +469,19 @@ normalize_rows <- function(W, verbose = TRUE) {
 #' @return Logical. TRUE if all rows sum to 1 within the specified tolerance, FALSE otherwise.
 #'
 #' @examples
+#' \dontrun{
 #' is_row_normalized(W)
-#'
+#'}
 #' @export
 is_row_normalized <- function(W, tolerance = 1e-6, verbose = TRUE) {
   if (!inherits(W, "dgCMatrix")) {
     stop("Input matrix W must be of class 'dgCMatrix'.")
   }
-  
+
   rs <- Matrix::rowSums(W)
   diffs <- abs(rs - 1)
   not_ok <- which(diffs > tolerance)
-  
+
   if (verbose) {
     if (length(not_ok) == 0) {
       message("Matrix appears to be row-normalized.")
@@ -484,7 +489,7 @@ is_row_normalized <- function(W, tolerance = 1e-6, verbose = TRUE) {
       message(sprintf("%d rows are not row-normalized (tolerance = %.1e).", length(not_ok), tolerance))
     }
   }
-  
+
   return(length(not_ok) == 0)
 }
 
@@ -557,7 +562,7 @@ coerce_to_dgCMatrix <- function(W) {
 #' **Interpreting Per-Sample Spillover Scores**
 #'
 #' This function computes a summary score for each sample, reflecting how strongly the sample expresses genes
-#' that were influenced by network-based spillover from upstream signals (e.g., hub genes or initiators). 
+#' that were influenced by network-based spillover from upstream signals (e.g., hub genes or initiators).
 #'
 #' The default scoring function calculates a weighted sum:
 #'
@@ -570,7 +575,7 @@ coerce_to_dgCMatrix <- function(W) {
 #' - \eqn{\text{expression}_{gs}} is the expression of gene *g* in sample *s*
 #' - \eqn{\text{spillover}_g} is the spillover score assigned to gene *g* at that timepoint
 #'
-#' This score can be interpreted as the degree to which a sample expresses the genes that received 
+#' This score can be interpreted as the degree to which a sample expresses the genes that received
 #' signal via network propagation. Higher values suggest a stronger manifestation of upstream network activity.
 #'
 #' **Z-score Option (`normalize_samples = TRUE`):**
@@ -587,16 +592,17 @@ coerce_to_dgCMatrix <- function(W) {
 #' This flag takes the absolute value of expression values before applying the spillover weights. This helps avoid
 #' signal cancellation if the expression data has been centered, scaled, or otherwise contains negative values.
 #' It is especially useful when the presence or magnitude of expression is of interest, rather than its direction.
-#' 
+#'
 #' @return A named numeric vector (if single input) or named list of per-timepoint score vectors.
 #'
 #' @examples
+#' \dontrun{
 #' # Single timepoint
 #' scores <- summarize_spillover_per_sample(expr, spillover_vec)
 #'
 #' # Timecourse
 #' scores_list <- summarize_spillover_per_sample(expr_list, spillover_list)
-#'
+#'}
 #' @export
 summarize_spillover_per_sample <- function(expr,
                                            spillover,
@@ -607,15 +613,15 @@ summarize_spillover_per_sample <- function(expr,
                                            verbose = TRUE) {
   # --- Handle single vs list input ---
   is_timecourse <- is.list(expr) && is.list(spillover)
-  
+
   if (is_timecourse) {
     if (length(expr) != length(spillover)) {
       stop("If both `expr` and `spillover` are lists, they must be the same length.")
     }
-    
+
     result_list <- vector("list", length(expr))
     names(result_list) <- names(expr)
-    
+
     for (i in seq_along(expr)) {
       if (verbose) message(sprintf("Scoring timepoint %d/%d: %s", i, length(expr), names(expr)[i]))
       result_list[[i]] <- summarize_spillover_per_sample(expr[[i]],
@@ -626,43 +632,43 @@ summarize_spillover_per_sample <- function(expr,
                                                          abs_expression = abs_expression,
                                                          verbose = verbose)
     }
-    
+
     return(result_list)
   }
-  
+
   # --- Single matrix/vector case ---
   if (!is.matrix(expr) && !is.data.frame(expr)) {
     stop("`expr` must be a matrix/data frame or list thereof.")
   }
   if (!is.numeric(spillover)) stop("`spillover` must be a numeric named vector or list thereof.")
-  
+
   if (genes_in_rows) expr <- t(expr)
-  
+
   gene_overlap <- intersect(colnames(expr), names(spillover))
-  
+
   if (length(gene_overlap) < 5) {
     warning("Fewer than 5 overlapping genes between expression data and spillover vector.")
   }
-  
+
   expr_sub <- expr[, gene_overlap, drop = FALSE]
   spillover_sub <- spillover[gene_overlap]
-  
+
   if (abs_expression) {
     expr_sub <- abs(expr_sub)
   }
-  
+
   if (is.null(summary_fn)) {
     scores <- as.numeric(as.matrix(expr_sub) %*% spillover_sub)
   } else {
     scores <- apply(t(expr_sub), 2, function(x) summary_fn(x, spillover_sub))
   }
-  
+
   if(normalize_scores){
     scores <- scale(scores)[,1]
   }
-  
+
   names(scores)<-rownames(expr_sub)
-  
+
   return(scores)
 }
 
@@ -725,6 +731,7 @@ summarize_spillover_per_sample <- function(expr,
 #' @return A list of data frames, one per timepoint. Each data frame is samples × modules, with spillover summary scores.
 #'
 #' @examples
+#' \dontrun{
 #' # Basic usage with z-score
 #' module_scores <- summarize_spillover_by_sample_and_module(expr_list, spillover_list, module_list,
 #'                    normalize_scores = TRUE)
@@ -733,7 +740,7 @@ summarize_spillover_per_sample <- function(expr,
 #' module_scores <- summarize_spillover_by_sample_and_module(expr_list, spillover_list, module_list,
 #'                    abs_expression = TRUE,
 #'                    summary_func = function(expr, spill) mean(expr * spill))
-#'
+#'}
 #' @export
 summarize_spillover_by_sample_and_module <- function(expr_list,
                                                      spillover_list,
@@ -745,50 +752,50 @@ summarize_spillover_by_sample_and_module <- function(expr_list,
                                                      verbose = TRUE) {
   stopifnot(length(expr_list) == length(spillover_list),
             length(expr_list) == length(module_membership_list))
-  
+
   if (is.null(summary_func)) {
     summary_func <- function(expr, spill) sum(expr * spill, na.rm = TRUE)
   }
-  
+
   n_timepoints <- length(expr_list)
   result_list <- vector("list", n_timepoints)
   names(result_list) <- names(expr_list)
-  
+
   for (i in seq_len(n_timepoints)) {
     if (verbose) message("Processing timepoint ", i, "/", n_timepoints)
-    
+
     expr <- expr_list[[i]]
     spill <- spillover_list[[i]]
     module_map <- module_membership_list[[i]]
-    
+
     if (genes_in_rows) {
       expr <- t(expr)
     }
-    
+
     common_genes <- Reduce(intersect, list(colnames(expr), names(spill), names(module_map)))
     if (length(common_genes) < 5) {
       warning(sprintf("Only %d overlapping genes at timepoint %s", length(common_genes), names(expr_list)[i]))
     }
-    
+
     expr <- expr[, common_genes, drop = FALSE]
     spill <- spill[common_genes]
     module_map <- module_map[common_genes]
-    
+
     if (abs_expression) {
       expr <- abs(expr)
     }
-    
+
     modules <- unique(module_map)
     samples <- rownames(expr)
-    
+
     summary_mat <- matrix(NA_real_, nrow = length(samples), ncol = length(modules),
                           dimnames = list(samples, modules))
-    
+
     for (m in modules) {
       genes_m <- names(module_map[module_map == m])
       expr_m <- expr[, genes_m, drop = FALSE]
       spill_m <- spill[genes_m]
-      
+
       for (s in samples) {
         val <- summary_func(expr_m[s, ], spill_m)
         if (length(val) != 1 || !is.numeric(val)) {
@@ -797,15 +804,15 @@ summarize_spillover_by_sample_and_module <- function(expr_list,
         summary_mat[s, m] <- val
       }
     }
-    
+
     df <- as.data.frame(summary_mat)
     if (normalize_scores) {
       df <- as.data.frame(scale(df))
     }
-    
+
     result_list[[i]] <- df
   }
-  
+
   return(result_list)
 }
 

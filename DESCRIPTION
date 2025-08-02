@@ -4,7 +4,7 @@ Description: QUESTIONS (Quantifying Expression Spillover Trajectories in Omic Ne
 Version: 0.1.0
 Authors@R: 
     person("Carly", "Bobak", email = "your-email@dartmouth.edu", role = c("aut", "cre"))
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
@@ -14,5 +14,5 @@ Imports:
     methods,
     rlang,
     stats
-URL: https://github.com/CarlyBobak/QUESTIONS
+URL: https://github.com/CarlyBobak/QUESTIONS, https://carlybobak.github.io/QUESTIONS/
 BugReports: https://github.com/CarlyBobak/QUESTIONS/issues

@@ -83,6 +83,7 @@ avoid cancellation effects if the expression matrix has been centered or include
 Use this option when the biological interpretation of expression is directional (e.g., presence/absence) rather than fold-change.
 }
 \examples{
+\dontrun{
 # Basic usage with z-score
 module_scores <- summarize_spillover_by_sample_and_module(expr_list, spillover_list, module_list,
                    normalize_scores = TRUE)
@@ -91,5 +92,5 @@ module_scores <- summarize_spillover_by_sample_and_module(expr_list, spillover_l
 module_scores <- summarize_spillover_by_sample_and_module(expr_list, spillover_list, module_list,
                    abs_expression = TRUE,
                    summary_func = function(expr, spill) mean(expr * spill))
-
+}
 }

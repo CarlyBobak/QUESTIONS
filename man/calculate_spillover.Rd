@@ -68,22 +68,20 @@ A named numeric vector of spillover scores at time 2 for all genes in the networ
 }
 \description{
 This function estimates spillover effects from a set of initiator genes (with optional initial effects)
-using a transition matrix derived from a TOM matrix, adjacency matrix, or WGCNA object. Optionally, the 
+using a transition matrix derived from a TOM matrix, adjacency matrix, or WGCNA object. Optionally, the
 network matrix can be pruned to remove weak or noisy connections using either a threshold or top-k filtering strategy.
 }
 \examples{
-# Using TOM matrix with default binary initiators
-spillover <- calculate_spillover(network = tom_matrix,
-                                 initiator_genes = hub_genes,
-                                 alpha = 0.85,
-                                 prune = TRUE,
-                                 prune_args = list(method = "threshold", auto = TRUE, target_sparsity = 0.05))
+\dontrun{
+spillover <- calculate_spillover(
+  network = tom_matrix,
+  initiator_genes = hub_genes,
+  alpha = 0.85,
+  prune = TRUE,
+  prune_args = list(method = "threshold", auto = TRUE, target_sparsity = 0.05)
+)
+}
 
-# Using WGCNA result object with weighted effects
-spillover <- calculate_spillover(network = wgcna_result,
-                                 initiator_genes = names(logFC),
-                                 gene_effects = logFC,
-                                 alpha = 0.9)
 }
 \seealso{
 \code{\link{prune_matrix}} for preprocessing options to filter weak edges before spillover.

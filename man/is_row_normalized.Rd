@@ -22,6 +22,7 @@ within a specified numeric tolerance. This is useful for confirming
 that a matrix is suitable for diffusion or spillover operations.
 }
 \examples{
+\dontrun{
 is_row_normalized(W)
-
+}
 }

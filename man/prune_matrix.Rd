@@ -22,8 +22,6 @@ prune_matrix(
 \item{target_sparsity}{Desired sparsity level (only used if auto = TRUE and method = "threshold")}
 
 \item{verbose}{If TRUE, prints pruning diagnostics}
-
-\item{method}{Either "threshold" or "topk"}
 }
 \value{
 A pruned matrix with zeroed weak connections

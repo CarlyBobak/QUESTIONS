@@ -23,6 +23,7 @@ If any row has a sum of zero (i.e., disconnected node), the function replaces th
 for that row with 1, effectively preserving its identity and avoiding division by zero.
 }
 \examples{
+\dontrun{
 W_norm <- normalize_rows(W)
-
+}
 }
