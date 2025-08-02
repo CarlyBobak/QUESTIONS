@@ -1,0 +1,16 @@
+Package: QUESTIONS
+Title: QUESTIONS: Quantifying Expression Spillover Trajectories in Omic Network Series
+Description: QUESTIONS (Quantifying Expression Spillover Trajectories in Omic Network Series) is an R package for modeling signal propagation in dynamic biological networks, particularly those derived from WGCNA. It extends the spillover framework to support timecourse analyses, pruning of dense network matrices, and interpretation of gene- and module-level influence across conditions. QUESTIONS includes tools for pruning, row normalization, dynamic thresholding, and per-sample spillover scoring to support network-based interpretation of omics data.
+Version: 0.1.0
+Authors@R: 
+    person("Carly", "Bobak", email = "your-email@dartmouth.edu", role = c("aut", "cre"))
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
+Imports: 
+    magrittr,
+    Matrix,
+    methods,
+    rlang,
+    stats
