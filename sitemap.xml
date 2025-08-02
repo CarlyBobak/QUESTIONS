@@ -1,0 +1,20 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://carlybobak.github.io/QUESTIONS/404.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/LICENSE-text.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/LICENSE.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/authors.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/index.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/QUESTIONS-package.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/calculate_spillover.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/coerce_to_dgCMatrix.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/extract_network_matrix.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/index.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/is_row_normalized.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/normalize_rows.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/prune_matrix.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/spillover_threshold_from_degree.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/spillover_timecourse.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/summarize_spillover_by_sample_and_module.html</loc></url>
+<url><loc>https://carlybobak.github.io/QUESTIONS/reference/summarize_spillover_per_sample.html</loc></url>
+</urlset>
+
