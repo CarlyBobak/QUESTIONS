@@ -70,11 +70,11 @@ calculate_spillover(
 )
 ```
 
-## 🖋 Citation
+## Citation
 
 If you use this package, please cite:
 
-Carly Bobak (2025).  
+Carly Bobak, Jaini Shah, James O'Malley (2025).  
 *QUESTIONS: Quantifying Expression Spillover Trajectories in Omic
 Network Series*.  
 R package version 0.1.0.
