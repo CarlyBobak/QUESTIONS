@@ -4,128 +4,183 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>QUESTIONS: Quantifying Expression Spillover Trajectories in Omic Network Series • QUESTIONS</title>
-<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
-<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="QUESTIONS: Quantifying Expression Spillover Trajectories in Omic Network Series">
-<meta name="description" content="QUESTIONS (Quantifying Expression Spillover Trajectories in Omic Network Series) is an R package for modeling signal propagation in dynamic biological networks, particularly those derived from WGCNA. It extends the spillover framework to support timecourse analyses, pruning of dense network matrices, and interpretation of gene- and module-level influence across conditions. QUESTIONS includes tools for pruning, row normalization, dynamic thresholding, and per-sample spillover scoring to support network-based interpretation of omics data.">
-<meta property="og:description" content="QUESTIONS (Quantifying Expression Spillover Trajectories in Omic Network Series) is an R package for modeling signal propagation in dynamic biological networks, particularly those derived from WGCNA. It extends the spillover framework to support timecourse analyses, pruning of dense network matrices, and interpretation of gene- and module-level influence across conditions. QUESTIONS includes tools for pruning, row normalization, dynamic thresholding, and per-sample spillover scoring to support network-based interpretation of omics data.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantifying Expression Spillover Trajectories in Omic Network Series • QUESTIONS</title>
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script><meta property="og:title" content="Quantifying Expression Spillover Trajectories in Omic Network Series">
+<meta property="og:description" content="Adapts the network-spillover (peer-exposure) decomposition from the analysis of interference in social networks to gene co-expression networks. Given a weighted network over genes, a module assignment, a per-unit quantity to propagate, and an outcome, QUESTIONS separates each module's own activity (a direct term) from the activity reaching it across between-module edges (a spillover term) and tests whether cross-module spillover predicts the outcome beyond direct activity, with small-sample validation (Freedman-Lane permutation with Benjamini-Hochberg adjustment, bootstrap confidence intervals and sign-stability, repeated cross-validation, and leave-one-out). Associations are correlational. Includes tested helpers for responsive-gene scoping and signed mutual-kNN plus Infomap network construction.">
+<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
-<body>
-    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+<body data-spy="scroll" data-target="#toc">
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <div class="container template-home">
+      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">QUESTIONS</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
+      </span>
+    </div>
 
-    <a class="navbar-brand me-2" href="index.html">QUESTIONS</a>
-
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
-
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+<li>
+  <a href="reference/index.html">Reference</a>
+</li>
       </ul>
-<ul class="navbar-nav">
-<li class="nav-item"><form class="form-inline" role="search">
- <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
-</form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/CarlyBobak/QUESTIONS/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/CarlyBobak/QUESTIONS/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+
+  </a>
+</li>
       </ul>
 </div>
-
-
+<!--/.nav-collapse -->
   </div>
-</nav><div class="container template-home">
-<div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
+<!--/.container -->
+</div>
+<!--/.navbar -->
+
+
+
+      </header><div class="row">
+  <div class="contents col-md-9">
+<div class="section level1">
 <div class="page-header"><h1 id="questions">QUESTIONS<a class="anchor" aria-label="anchor" href="#questions"></a>
 </h1></div>
-<p><strong>QUESTIONS</strong> (<em>Quantifying Expression Spillover Trajectories in Omic Network Series</em>) is an R package for modeling how upstream gene signals propagate through time-ordered biological networks — especially those derived from WGCNA or other coexpression analyses.</p>
-<p>QUESTIONS extends the spillover propagation framework to help researchers quantify how biological influence shifts over time, identify key signal-carrying modules, and interpret dynamic omics data with network-level context.</p>
+<p><strong>Q</strong>uantifying <strong>E</strong>xpression <strong>S</strong>pillover <strong>T</strong>rajectories <strong>i</strong>n <strong>O</strong>mic <strong>N</strong>etwork <strong>S</strong>eries</p>
+<p>QUESTIONS adapts the idea of <em>network spillover</em>, developed to quantify indirect (peer) effects under interference in social networks, to gene co-expression networks. Treating modules as units and the network as the conduit of influence, it separates a module’s own activity (a <em>direct</em> term) from the activity reaching it through the network (a <em>spillover</em> term), and tests whether cross-module spillover predicts an outcome beyond the module’s own activity.</p>
+<p>The associations QUESTIONS estimates are correlational, not causal: the underlying network is an undirected co-expression graph.</p>
 <hr>
 <div class="section level2">
-<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CarlyBobak/QUESTIONS"</span><span class="op">)</span></span></code></pre></div>
+<p>QUESTIONS depends on <strong>limma</strong>, which is a Bioconductor package. If you do not already have it, install Bioconductor support first:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="st">"limma"</span><span class="op">)</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="quick-start-your-own-data">Quick start (your own data)<a class="anchor" aria-label="anchor" href="#quick-start-your-own-data"></a>
+</h2>
+<p>You need four things:</p>
 <ul>
 <li>
-<strong>Spillover modeling</strong> between initiator genes and their neighbors</li>
+<code>expr</code>: a gene x sample expression matrix (rows are genes),</li>
 <li>
-<strong>Timecourse analysis</strong> across a list of network snapshots</li>
+<code>group</code>: a factor giving each sample’s condition or timepoint,</li>
 <li>
-<strong>Network pruning</strong> via thresholds or top-k neighbors</li>
+<code>unit</code>: a factor giving each sample’s subject/unit (for repeated measures),</li>
 <li>
-<strong>Spillover thresholding</strong> informed by network structure</li>
+<code>outcome</code>: a named numeric outcome, one value per unit.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CarlyBobak/QUESTIONS" class="external-link">QUESTIONS</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 1. (optional) scope to responsive genes and build the consensus network.</span></span>
+<span><span class="co">#    Skip this if you already have a weighted network + module assignment.</span></span>
+<span><span class="va">de</span>  <span class="op">&lt;-</span> <span class="fu"><a href="reference/select_responsive_genes.html">select_responsive_genes</a></span><span class="op">(</span><span class="va">expr</span>, group <span class="op">=</span> <span class="va">group</span>, block <span class="op">=</span> <span class="va">unit</span>, fdr <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/build_knn_network.html">build_knn_network</a></span><span class="op">(</span><span class="va">de</span><span class="op">$</span><span class="va">expr_de</span>, k <span class="op">=</span> <span class="fl">50</span>, sim <span class="op">=</span> <span class="st">"signed"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># module ids come back as integers named by gene; label them once</span></span>
+<span><span class="va">mem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="va">net</span><span class="op">$</span><span class="va">membership</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">net</span><span class="op">$</span><span class="va">membership</span><span class="op">)</span><span class="op">)</span>   <span class="co"># "M8"-style</span></span>
+<span></span>
+<span><span class="co"># 2. build the direct + spillover terms (long format, one row per sample x module)</span></span>
+<span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prepare_spillover_terms.html">prepare_spillover_terms</a></span><span class="op">(</span></span>
+<span>  network        <span class="op">=</span> <span class="va">net</span><span class="op">$</span><span class="va">W_graph</span>,</span>
+<span>  membership     <span class="op">=</span> <span class="va">mem</span>,</span>
+<span>  expr           <span class="op">=</span> <span class="va">de</span><span class="op">$</span><span class="va">expr_de</span>,</span>
+<span>  sample_unit    <span class="op">=</span> <span class="va">unit</span>,</span>
+<span>  sample_time    <span class="op">=</span> <span class="va">group</span>,</span>
+<span>  outcome        <span class="op">=</span> <span class="va">outcome</span>,</span>
+<span>  baseline_times <span class="op">=</span> <span class="st">"Pre"</span>                <span class="co"># level(s) of `group` that define baseline</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 3. define the candidate family, independent of the outcome</span></span>
+<span><span class="va">eff</span>  <span class="op">&lt;-</span> <span class="fu"><a href="reference/baseline_effect_vectors.html">baseline_effect_vectors</a></span><span class="op">(</span><span class="va">de</span><span class="op">$</span><span class="va">expr_de</span>, <span class="va">group</span>, block <span class="op">=</span> <span class="va">unit</span>, baseline_levels <span class="op">=</span> <span class="st">"Pre"</span><span class="op">)</span></span>
+<span><span class="va">Mmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/descriptive_module_spillover.html">descriptive_module_spillover</a></span><span class="op">(</span><span class="va">net</span><span class="op">$</span><span class="va">W_graph</span>, <span class="va">mem</span>, <span class="va">eff</span><span class="op">)</span>   <span class="co"># accepts mem or integer ids</span></span>
+<span><span class="va">cand</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/select_candidates.html">select_candidates</a></span><span class="op">(</span><span class="va">long</span>, n <span class="op">=</span> <span class="fl">15</span>, module_spillover <span class="op">=</span> <span class="va">Mmat</span>, exclude_times <span class="op">=</span> <span class="st">"Pre"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 4. screen with small-sample validation (permutation + BH, bootstrap CI, CV, LOO)</span></span>
+<span><span class="va">res</span>  <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_spillover_screen.html">fit_spillover_screen</a></span><span class="op">(</span><span class="va">long</span>, <span class="va">cand</span>, n_perm <span class="op">=</span> <span class="fl">5000</span>, n_boot <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span>
+<span><span class="va">res</span></span></code></pre></div>
+<p><code>res</code> has one row per candidate: the standardized spillover coefficient, a bootstrap 95% confidence interval and sign-stability, a Freedman-Lane permutation p-value adjusted across the family (<code>p_BH</code>), the cross-validated gain in out-of-sample R-squared from adding spillover, the direct-term p-value, and a leave-one-out worst-case p.</p>
+<div class="section level3">
+<h3 id="a-note-on-module-labels">A note on module labels<a class="anchor" aria-label="anchor" href="#a-note-on-module-labels"></a>
+</h3>
+<p><code><a href="reference/build_knn_network.html">build_knn_network()</a></code> returns integer module ids named by gene. Labeling them once as <code>M&lt;k&gt;</code> (as above) is optional but makes <code>long$module</code> and the rownames of <code>Mmat</code> read consistently; both <code><a href="reference/prepare_spillover_terms.html">prepare_spillover_terms()</a></code> and <code><a href="reference/descriptive_module_spillover.html">descriptive_module_spillover()</a></code> accept either the integer ids or the labels.</p>
+<hr>
+</div>
+</div>
+<div class="section level2">
+<h2 id="one-model-at-a-time-and-adding-covariates">One model at a time, and adding covariates<a class="anchor" aria-label="anchor" href="#one-model-at-a-time-and-adding-covariates"></a>
+</h2>
+<p>To fit and validate a single module x condition combination directly:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fit_spillover_outcome.html">fit_spillover_outcome</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">outcome_vec</span>, direct <span class="op">=</span> <span class="va">direct_vec</span>, spill <span class="op">=</span> <span class="va">spill_vec</span><span class="op">)</span></span></code></pre></div>
+<p>If your sample size allows, you can adjust for covariates. They enter the full model, the reduced (permutation and CV baseline) model, the bootstrap, and CV, so the spillover test stays a <em>partial</em> test conditional on direct + covariates:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fit_spillover_outcome.html">fit_spillover_outcome</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">direct</span>, <span class="va">spill</span>, covariates <span class="op">=</span> <span class="va">Z</span><span class="op">)</span>   <span class="co"># Z: matrix/data.frame, rows = units</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="what-the-method-assumes-and-what-to-tune">What the method assumes, and what to tune<a class="anchor" aria-label="anchor" href="#what-the-method-assumes-and-what-to-tune"></a>
+</h2>
+<p>QUESTIONS needs only a weighted network over units, a per-unit quantity to propagate, and an outcome, so it applies beyond the example above. Two settings are tuned to a small-sample design (n = 37 in the source study) and should be revisited for your data:</p>
+<ul>
 <li>
-<strong>Sample-level scoring</strong> based on spillover-weighted expression</li>
+<strong>Permutation count</strong> (<code>n_perm</code>): the smallest achievable p is <code>1 / (n_perm + 1)</code>. For small outcome p-values, or many candidates, raise it (20000 or more) so the BH-adjusted values at the top of the ranking are stable between runs.</li>
 <li>
-<strong>Module-level summaries</strong> across timepoints</li>
-<li>Native support for sparse matrices and WGCNA objects</li>
+<strong>Candidate rule</strong> (<code>select_candidates</code>): candidates should be chosen <em>independently of the outcome</em> so the multiple-testing family is well defined. The default ranks modules by peak absolute descriptive spillover; substitute a rule appropriate to your design if needed, but never one that looks at <code>outcome</code>.</li>
 </ul>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<h2 id="reproducing-the-paper">Reproducing the paper<a class="anchor" aria-label="anchor" href="#reproducing-the-paper"></a>
 </h2>
-<p>Install the development version of <code>QUESTIONS</code> from GitHub with <a href="https://pak.r-lib.org" class="external-link">pak</a>:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"CarlyBobak/QUESTIONS"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="basic-example">Basic Example<a class="anchor" aria-label="anchor" href="#basic-example"></a>
-</h2>
-<p>To compute spillover:</p>
-<ol style="list-style-type: decimal">
-<li>Create a similarity matrix (e.g., TOM or adjacency matrix).</li>
-<li>Choose one or more initiator genes to seed the propagation.</li>
-<li>Compute spillover using <code><a href="reference/calculate_spillover.html">calculate_spillover()</a></code> with optional pruning or normalization.</li>
-<li>Interpret or summarize results at the gene, sample, or module level.</li>
-</ol>
-<p>For example, you might start with a 2×2 matrix of gene similarity values, initialize spillover from one gene, and observe how signal distributes across the network. Larger networks and timecourse inputs can be handled using <code><a href="reference/spillover_timecourse.html">spillover_timecourse()</a></code>.</p>
-<p>Sample- and module-level summaries can be generated using <code><a href="reference/summarize_spillover_per_sample.html">summarize_spillover_per_sample()</a></code> or <code><a href="reference/summarize_spillover_by_sample_and_module.html">summarize_spillover_by_sample_and_module()</a></code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CarlyBobak/QUESTIONS" class="external-link">QUESTIONS</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://Matrix.R-forge.R-project.org" class="external-link">Matrix</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Matrix/man/Matrix.html" class="external-link">Matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">1</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span>, sparse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Gene1"</span>, <span class="st">"Gene2"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/calculate_spillover.html">calculate_spillover</a></span><span class="op">(</span></span>
-<span>  network <span class="op">=</span> <span class="va">mat</span>,</span>
-<span>  initiator_genes <span class="op">=</span> <span class="st">"Gene1"</span>,</span>
-<span>  alpha <span class="op">=</span> <span class="fl">0.9</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
-</h2>
-<p>If you use this package, please cite:</p>
-<p>Carly Bobak, Jaini Shah, James O’Malley (2025).<br><em>QUESTIONS: Quantifying Expression Spillover Trajectories in Omic Network Series</em>.<br>
-R package version 0.1.0.</p>
+<p>The analysis behind the manuscript (tuberculosis disease-severity case study) is reproduced by a standalone script and its staged data. See the <code>paper/</code> directory (or the companion reproduction repository) and its README.</p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="author--development">Author &amp; Development<a class="anchor" aria-label="anchor" href="#author--development"></a>
+<h2 id="citing-questions">Citing QUESTIONS<a class="anchor" aria-label="anchor" href="#citing-questions"></a>
 </h2>
-<p>Developed by Carly Bobak in Research Computing and Data, Jaini Shah, and James O’Malley in The Dartmouth Institute at Dartmouth College to support time-resolved and network-informed omics analysis.</p>
-<p>Questions and contributions welcome via <a href="https://github.com/CarlyBobak/QUESTIONS/issues" class="external-link">GitHub Issues</a>.</p>
+<p>If you use this package, please cite the methods paper (see <code>inst/CITATION</code>), and the social-network spillover work it adapts:</p>
+<blockquote>
+<p>O’Malley AJ, Bobak CA, Barnato AE. Causal Inference for Intervention Spillover in a Stepped-Wedge Cluster-randomized Trial: Lessons from a Physician Network. <em>Social Networks</em> 2026; 86:431-445. <a href="doi:10.1016/j.socnet.2026.04.017" class="uri">doi:10.1016/j.socnet.2026.04.017</a></p>
+</blockquote>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
-<p>MIT License © 2025 Carly Bobak</p>
+<p>See <code>LICENSE</code>. (Choose and add a license before the public push.)</p>
 </div>
 </div>
-  </main><aside class="col-md-3"><div class="links">
+  </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/CarlyBobak/QUESTIONS/" class="external-link">Browse source code</a></li>
@@ -136,8 +191,9 @@ R package version 0.1.0.</p>
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li>
+<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+</li>
 </ul>
 </div>
 
@@ -152,26 +208,31 @@ R package version 0.1.0.</p>
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Carly Bobak <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Carly A. Bobak <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Jaini Shah <br><small class="roles"> Author </small>   </li>
+<li>A. James O'Malley <br><small class="roles"> Author </small>   </li>
 </ul>
 </div>
 
 
 
-  </aside>
+  </div>
 </div>
 
 
-    <footer><div class="pkgdown-footer-left">
-  <p>Developed by Carly Bobak.</p>
+      <footer><div class="copyright">
+  <p></p>
+<p>Developed by Carly A. Bobak, Jaini Shah, A. James O’Malley.</p>
 </div>
 
-<div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<div class="pkgdown">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
-    </footer>
+      </footer>
 </div>
+
 
 
 
