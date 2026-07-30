@@ -91,9 +91,3 @@ to match the published module numbering exactly.
 - `code/figures/submodule_panels.R`      Subnetwork figures
 - `code/figures/network_figure_repel.R`      Full network figure with labels
 - `code/pathway_enrichment/characterize_thematic.R` enrichment labelling
-- `data/module_labels_curated.csv` curated module annotations (heatmap axis labels)
-- `data/de_selection.rds` limma selected temporally associated genes
-- `data/spillover_network.rds` network object
-- `data/table1_full_screen.rds` spillover results object
-- `data/table1_reproduced` spillover results object in .csv format
-- `data/week1_data.rds` cleaned data files from GEO
