@@ -132,12 +132,13 @@ reproduced by a standalone script and its staged data. See the `paper/` director
 
 ## Citing QUESTIONS
 
-If you use this package, please cite the methods paper (see `inst/CITATION`), and
-the social-network spillover work it adapts:
+If you use this package, please cite the methods paper (see inst/CITATION) and the network-spillover (peer-exposure) work it adapts:
 
-> O'Malley AJ, Bobak CA, Barnato AE. Causal Inference for Intervention Spillover
-> in a Stepped-Wedge Cluster-randomized Trial: Lessons from a Physician Network.
-> *Social Networks* 2026; 86:431-445. doi:10.1016/j.socnet.2026.04.017
+Bobak CA, Mohan D, Murphy MA, Barnato AE, O'Malley AJ. Gaming the System: Evaluating Spillover in a Video Game Intervention for Advance Care Planning using Physician Social Networks. Health Services and Outcomes Research Methodology 2026. doi:10.1007/s10742-025-00370-9
+
+The related causal-inference treatment of network spillover:
+
+O'Malley AJ, Bobak CA, Barnato AE. Causal Inference for Intervention Spillover in a Stepped-Wedge Cluster-randomized Trial: Lessons from a Physician Network. Social Networks 2026; 86:431-445. doi:10.1016/j.socnet.2026.04.017
 
 ---
 
