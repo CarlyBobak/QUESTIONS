@@ -1,0 +1,8 @@
+^archive$
+^paper$
+^dev$
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^REPO_LAYOUT\.md$
+^\.github$

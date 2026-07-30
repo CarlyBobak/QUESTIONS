@@ -1,0 +1,43 @@
+citHeader("To cite QUESTIONS in publications, use the package citation and the spillover method it adapts:")
+
+bibentry(
+  bibtype = "Manual",
+  title   = "QUESTIONS: Quantifying Expression Spillover Trajectories in Omic Network Series",
+  author  = c(person("Carly A.", "Bobak"),
+              person("Jaini", "Shah"),
+              person("A. James", "O'Malley")),
+  year    = "2026",
+  note    = "R package version 0.1.0",
+  url     = "https://github.com/CarlyBobak/QUESTIONS"
+)
+
+bibentry(
+  bibtype = "Article",
+  title   = paste("Gaming the System: Evaluating Spillover in a Video Game Intervention",
+                  "for Advance Care Planning using Physician Social Networks"),
+  author  = c(person("Carly A.", "Bobak"),
+              person("Deepika", "Mohan"),
+              person("Megan A.", "Murphy"),
+              person("Amber E.", "Barnato"),
+              person("A. James", "O'Malley")),
+  journal = "Health Services and Outcomes Research Methodology",
+  year    = "2026",
+  doi     = "10.1007/s10742-025-00370-9",
+  note    = "Online ahead of print; PMID 42079568, PMCID PMC13134650",
+  header  = "The network-spillover (peer-exposure) decomposition QUESTIONS adapts:"
+)
+
+bibentry(
+  bibtype = "Article",
+  title   = paste("Causal Inference for Intervention Spillover in a",
+                  "Stepped-Wedge Cluster-randomized Trial: Lessons from a Physician Network"),
+  author  = c(person("A. James", "O'Malley"),
+              person("Carly A.", "Bobak"),
+              person("Amber E.", "Barnato")),
+  journal = "Social Networks",
+  year    = "2026",
+  volume  = "86",
+  pages   = "431--445",
+  doi     = "10.1016/j.socnet.2026.04.017",
+  header  = "Related causal-inference treatment of network spillover:"
+)

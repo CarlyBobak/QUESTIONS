@@ -1,0 +1,38 @@
+Package: QUESTIONS
+Type: Package
+Title: Quantifying Expression Spillover Trajectories in Omic Network Series
+Version: 0.1.0
+Authors@R: c(
+    person("Carly A.", "Bobak", email = "carly.a.bobak@dartmouth.edu",
+           role = c("aut", "cre")),
+    person("Jaini", "Shah", email = "jaini.h.shah.GR@dartmouth.edu", role = "aut"),
+    person("A. James", "O'Malley", email = "james.omalley@dartmouth.edu", role = "aut"))
+Description: Adapts the network-spillover (peer-exposure) decomposition from the
+    analysis of interference in social networks to gene co-expression networks.
+    Given a weighted network over genes, a module assignment, a per-unit quantity
+    to propagate, and an outcome, QUESTIONS separates each module's own activity
+    (a direct term) from the activity reaching it across between-module edges (a
+    spillover term) and tests whether cross-module spillover predicts the outcome
+    beyond direct activity, with small-sample validation (Freedman-Lane
+    permutation with Benjamini-Hochberg adjustment, bootstrap confidence
+    intervals and sign-stability, repeated cross-validation, and leave-one-out).
+    Associations are correlational. Includes tested helpers for responsive-gene
+    scoping and signed mutual-kNN plus Infomap network construction.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports:
+    Matrix,
+    igraph,
+    limma,
+    stats,
+    methods,
+    parallel
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+biocViews: Software, GeneExpression, NetworkInference, GraphAndNetwork
+RoxygenNote: 7.3.3
+Roxygen: list(markdown = TRUE)
+URL: https://github.com/CarlyBobak/QUESTIONS
+BugReports: https://github.com/CarlyBobak/QUESTIONS/issues
